@@ -18,7 +18,7 @@ module.exports = function(app) {
             (err, data) => {
               resolve({
                 key: item.Key,
-                subject: querystring.parse(data.Metadata.subject),
+                subject: querystring.unescape(data.Metadata.subject),
                 from: data.Metadata.from,
                 to: data.Metadata.to
               })
