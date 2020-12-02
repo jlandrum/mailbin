@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const EmlParser = require('eml-parser')
+const querystring = require('querystring');
 
 module.exports = function(app) {
   const s3 = app.get('s3');
@@ -14,7 +15,12 @@ module.exports = function(app) {
         Promise.all(data.Contents.map(
           item => new Promise((resolve, reject) => {
           s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
-            (err, data) => resolve({...data, key: item.Key}));
+            (err, data) => resolve({
+              key: item.Key,
+              subject: querystring.parse(item.Metadata.subject),
+              from: item.Metadata.from,
+              to: item.Metadata.to
+            }));
         }))).then((data) => {
           res.render('index', {
             title: 'MailBin',
