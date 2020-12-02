@@ -2,6 +2,7 @@ function loadmail(name) {
   document.getElementById('fileview').src = `/view/${name}?inline`
   Array.from(document.getElementsByClassName(`active`)).forEach(element => element.classList.remove('active'))
   document.getElementById(`item_${name}`).classList.add('active')
+  document.getElementsByClassName(`Index__MailList`)[0].classList.remove('Index__MailList--show')
 }
 
 function toggleMobile() {
