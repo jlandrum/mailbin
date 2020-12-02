@@ -17,9 +17,9 @@ module.exports = function(app) {
           s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
             (err, data) => resolve({
               key: item.Key,
-              subject: querystring.parse(item.Metadata.subject),
-              from: item.Metadata.from,
-              to: item.Metadata.to
+              subject: querystring.parse(data.Metadata.subject),
+              from: data.Metadata.from,
+              to: data.Metadata.to
             }));
         }))).then((data) => {
           res.render('index', {
