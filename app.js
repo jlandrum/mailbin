@@ -44,7 +44,7 @@ const smtp = new SMTPServer({
         .then(result => {
           const from = result.from.value.map(it => `"${it.name}" <${it.address}>`).join(',')
           const to = result.to.value.map(it => `"${it.name}" <${it.address}>`).join(',')
-          const subject = result.subject
+          const subject = querystring.encode(result.subject)
       	  const date = result.date.toString()
           s3.putObject({
             Bucket: 'jlandrum-mailbin',
