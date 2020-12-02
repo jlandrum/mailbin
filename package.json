@@ -18,6 +18,7 @@
     "morgan": "~1.9.1",
     "pug": "^2.0.4",
     "uglify-js": "^2.6.0",
-    "smtp-server": "3.8.0"
+    "smtp-server": "3.8.0",
+    "aws-sdk": "2.802.0"
   }
 }

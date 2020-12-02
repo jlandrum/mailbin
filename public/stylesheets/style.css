@@ -6,3 +6,33 @@ body {
 a {
   color: #00B7FF;
 }
+
+.MailList {
+  padding: 0;
+  list-style: none;
+  width:  800px;
+}
+
+.MailList__item {
+  padding: 8px;
+  border: 1px solid black;
+  display: flex;
+  margin-bottom: -1px;
+  align-items: center;
+}
+
+.MailList__item__label {
+  flex-grow: 1;
+}
+
+.MailList__item__button {
+  margin: 0 8px;
+  background: #00B7FF;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.MailList__item__view {
+}

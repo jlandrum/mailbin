@@ -2,4 +2,14 @@ extends layout
 
 block content
   h1= title
+
   p Welcome to #{title}
+  ul(class='MailList')
+    each val in files
+      li(class='MailList__item')
+        span(class='MailList__item__label')= val
+        a(href=`/view/${val}` class='MailList__item__view MailList__item__button') View
+        a(href=`/download/${val}` class='MailList__item__download MailList__item__button') Download
+
+    else
+      li There are no files
