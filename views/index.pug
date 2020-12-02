@@ -8,7 +8,7 @@ block content
       p Welcome to #{title}
       ul(class='Index__MailList__List')
         p= mail
-        each val in files
+        each val in files && files.reverse()
           li(class='Index__MailList__List__item' onclick=`loadmail('${val.key}')` id=`item_${val.key}`)
             div(class='Index__MailList__List__item__details')
               p(class='Index__MailList__List__item__details__subject')= val.subject
