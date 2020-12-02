@@ -18,9 +18,9 @@ module.exports = function(app) {
             (err, data) => {
               resolve({
                 key: item.Key,
-                subject: querystring.unescape(data.Metadata.subject),
-                from: data.Metadata.from,
-                to: data.Metadata.to
+                subject: querystring.unescape(data.Metadata && data.Metadata.subject || ''),
+                from: data.Metadata && data.Metadata.from || '',
+                to: data.Metadata && data.Metadata.to || ''
               })
             });
         }))).then((data) => {
