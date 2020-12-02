@@ -1,19 +1,26 @@
 const express = require('express')
 const router = express.Router()
+const EmlParser = require('eml-parser')
 
 module.exports = function(app) {
   const s3 = app.get('s3');
 
   router.get('/', (req, res) => {
-    s3.listObjects({
+    s3.listObjectsV2({
       Bucket: 'jlandrum-mailbin'
     }, function(err, data) {
       if (err) console.log(err, err.stack);
       else {
-        res.render('index', {
-          title: 'MailBin',
-          files: data['Contents'].map((it) => it['Key'])
-        })
+        Promise.all(data.Contents.map(
+          item => new Promise((resolve, reject) => {
+          s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
+            (err, data) => resolve({...data, key: item.Key}));
+        }))).then((data) => {
+          res.render('index', {
+            title: 'MailBin',
+            files: data,
+          })
+        });
       }
     });
   });
@@ -23,7 +30,14 @@ module.exports = function(app) {
       Bucket: 'jlandrum-mailbin',
       Key: req.params.file
     }, function(err, data) {
-      res.set({'Content-Type': 'text/plain'}).send(data.Body);
+      new EmlParser(data.Body)
+        .parseEml()
+        .then(result => {
+          res.render('mail', { mail: result, file: req.params.file, inline: req.query.inline !== undefined});
+        })
+        .catch(err => {
+          res.render('mail', { error: err });
+      })
     });
   })
 
@@ -33,6 +47,23 @@ module.exports = function(app) {
       Key: req.params.file
     }, function(err, data) {
       res.send(data.Body);
+    });
+  })
+
+  router.get('/rendermail/:file', (req, res) => {
+    s3.getObject({
+      Bucket: 'jlandrum-mailbin',
+      Key: req.params.file
+    }, function(err, data) {
+      new EmlParser(data.Body)
+      .parseEml()
+      .then(result => {
+        res.set({'Content-Type': 'text/html'}).send(result.html || result.textAsHtml);
+      })
+      .catch(err => {
+        res.render('mail', { error: err });
+      })
+
     });
   })
 

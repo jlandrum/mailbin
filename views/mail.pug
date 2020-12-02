@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div(class=`MailView ${inline && `MailView--inline`}`)
+    div
+      h1= mail.subject
+      div(class='MailView__from')
+        p(class='MailView__from__label') From:
+        ul
+          each from in mail.from.value
+            li=`"${from.name}" <${from.address}>`
+      div(class='MailView__to')
+        p(class='MailView__to__label') To
+        ul
+          each to in mail.to.value
+            li=`"${to.name}" <${to.address}>`
+      p= mail.date
+      hr
+      iframe(class='MailView__email' src=`/rendermail/${file}`)
+

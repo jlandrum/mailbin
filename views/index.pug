@@ -1,15 +1,21 @@
 extends layout
 
 block content
-  h1= title
-
-  p Welcome to #{title}
-  ul(class='MailList')
-    each val in files
-      li(class='MailList__item')
-        span(class='MailList__item__label')= val
-        a(href=`/view/${val}` class='MailList__item__view MailList__item__button') View
-        a(href=`/download/${val}` class='MailList__item__download MailList__item__button') Download
-
-    else
-      li There are no files
+  script(src='js/index.js')
+  div(class='Index')
+    div(class='Index__MailList')
+      h1= title
+      p Welcome to #{title}
+      ul(class='Index__MailList__List')
+        p= mail
+        each val in files
+          li(class='Index__MailList__List__item' onclick=`loadmail('${val.key}')` id=`item_${val.key}`)
+            div(class='Index__MailList__List__item__details')
+              p(class='Index__MailList__List__item__details__subject')= val.Metadata.subject
+              p(class='Index__MailList__List__item__details__from')= val.Metadata.from
+              p(class='Index__MailList__List__item__details__to')= val.Metadata.to
+            a(href=`/view/${val.key}` class='Index__MailList__List__item__view Index__MailList__List__item__button') View
+            a(href=`/download/${val.key}` class='Index__MailList__List__item__download Index__MailList__List__item__button') Download
+        else
+          li There are no files
+    iframe(class="Index__FileView" id='fileview')

@@ -1,38 +1,105 @@
 body {
-  padding: 50px;
+  padding: 0;
+  margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
 }
 
 a {
   color: #00B7FF;
 }
 
-.MailList {
-  padding: 0;
+ul {
+  padding-left: 0;
   list-style: none;
-  width:  800px;
 }
 
-.MailList__item {
+.Index {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.Index__MailList {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.Index__MailList__List {
+  padding: 0;
+  list-style: none;
+  width: 800px;
+  flex-grow: 1;
+  overflow: auto;
+}
+.Index__MailList__List__item {
+  cursor: pointer;
   padding: 8px;
-  border: 1px solid black;
+  border: 1px solid #CCC;
   display: flex;
   margin-bottom: -1px;
   align-items: center;
 }
-
-.MailList__item__label {
+.Index__MailList__List__item.active {
+  background-color: #d8eeeb;
+}
+.Index__MailList__List__item:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.Index__MailList__List__item:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.Index__MailList__List__item__details {
   flex-grow: 1;
 }
-
-.MailList__item__button {
-  margin: 0 8px;
+.Index__MailList__List__item__details__subject, .Index__MailList__List__item__details__from, .Index__MailList__List__item__details__to {
+  margin: 0;
+  padding: 0;
+}
+.Index__MailList__List__item__details__subject {
+  font-weight: 800;
+}
+.Index__MailList__List__item__button {
+  margin: 0 4px;
   background: #00B7FF;
   color: white;
   padding: 8px;
   border-radius: 4px;
   text-decoration: none;
 }
-
-.MailList__item__view {
+.Index__FileView {
+  flex-grow: 1;
+  border: 1px solid #CCC;
+  border-radius: 8px;
+  margin: 8px;
 }
+
+.MailView {
+  width: 80vw;
+  border: 1px solid black;
+  padding: 16px;
+  margin: 0 auto;
+}
+.MailView--inline {
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.MailView__from, .MailView__to {
+  display: flex;
+  flex-direction: row;
+}
+.MailView__from__label, .MailView__to__label {
+  width: 50px;
+  font-weight: 800;
+}
+.MailView__email {
+  width: 100%;
+  height: 80vh;
+  border: 0;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -6,6 +6,8 @@ const logger = require('morgan');
 const app = express();
 const AWS = require('aws-sdk');
 const SMTPServer = require('smtp-server').SMTPServer;
+const EmlParser = require('eml-parser');
+const querystring = require('querystring');
 
 const indexRouter = require('./routes/index');
 
@@ -34,11 +36,19 @@ const smtp = new SMTPServer({
         stream.on('end', () => resolve(data))
       });
     })(stream).then((data) => {
-      s3.putObject({
-        Bucket: 'jlandrum-mailbin',
-        Key: filename,
-        Body: data,
-      }, (err, data) => {})
+      new EmlParser(data)
+        .parseEml()
+        .then(result => {
+          const From = result.from.value.map(it => `"${it.name}" <${it.address}>`).join(',')
+          const To = result.to.value.map(it => `"${it.name}" <${it.address}>`).join(',')
+          const Subject = result.subject
+          s3.putObject({
+            Bucket: 'jlandrum-mailbin',
+            Key: filename,
+            Body: data,
+            Metadata: {From, To, Subject},
+          }, (err, data) => {})
+      })
     });
 
 
@@ -63,6 +73,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'))
 
 app.use('/', indexRouter(app));
 
