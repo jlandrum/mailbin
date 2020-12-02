@@ -15,12 +15,15 @@ module.exports = function(app) {
         Promise.all(data.Contents.map(
           item => new Promise((resolve, reject) => {
           s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
-            (err, data) => resolve({
-              key: item.Key,
-              subject: querystring.parse(data.Metadata.subject),
-              from: data.Metadata.from,
-              to: data.Metadata.to
-            }));
+            (err, data) => {
+              console.log(JSON.stringify(data))
+              resolve({
+                key: item.Key,
+                subject: querystring.parse(data.Metadata.subject),
+                from: data.Metadata.from,
+                to: data.Metadata.to
+              })
+            });
         }))).then((data) => {
           res.render('index', {
             title: 'MailBin',
