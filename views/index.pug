@@ -3,11 +3,11 @@ extends layout
 block content
   script(src='js/index.js')
   div(class='Index')
-    div(class='Index__MailList')
-      h1= title
-      p Welcome to #{title}
+    button(onclick='toggleMobile()' class='Index__Toggle') Show List
+    div(class='Index__MailList Index__MailList--show')
+      h1= `${title} 🗑`
+      p Logged in as anonymous<br/>Viewing mailbox: public
       ul(class='Index__MailList__List')
-        p= mail
         each val in files && files.reverse()
           li(class='Index__MailList__List__item' onclick=`loadmail('${val.key}')` id=`item_${val.key}`)
             div(class='Index__MailList__List__item__details')
@@ -16,6 +16,8 @@ block content
               p(class='Index__MailList__List__item__details__to')= val.to
             a(href=`/view/${val.key}` class='Index__MailList__List__item__view Index__MailList__List__item__button') View
             a(href=`/download/${val.key}` class='Index__MailList__List__item__download Index__MailList__List__item__button') Download
+            a(href=`/?deleteEmail=${val.key}` class='Index__MailList__List__item__delete Index__MailList__List__item__button Index__MailList__List__item__button--delete') Delete
         else
           li There are no files
+      p MailBin &copy; 2020 James Landrum
     iframe(class="Index__FileView" id='fileview')

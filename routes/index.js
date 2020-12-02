@@ -6,7 +6,7 @@ const querystring = require('querystring');
 module.exports = function(app) {
   const s3 = app.get('s3');
 
-  router.get('/', (req, res) => {
+  const index = (req, res) => {
     s3.listObjectsV2({
       Bucket: 'jlandrum-mailbin'
     }, function(err, data) {
@@ -14,16 +14,16 @@ module.exports = function(app) {
       else {
         Promise.all(data.Contents.map(
           item => new Promise((resolve, reject) => {
-          s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
-            (err, data) => {
-              resolve({
-                key: item.Key,
-                subject: querystring.unescape(data.Metadata && data.Metadata.subject || ''),
-                from: data.Metadata && data.Metadata.from || '',
-                to: data.Metadata && data.Metadata.to || ''
-              })
-            });
-        }))).then((data) => {
+            s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
+              (err, data) => {
+                resolve({
+                  key: item.Key,
+                  subject: querystring.unescape(data.Metadata && data.Metadata.subject || ''),
+                  from: data.Metadata && data.Metadata.from || '',
+                  to: data.Metadata && data.Metadata.to || ''
+                })
+              });
+          }))).then((data) => {
           res.render('index', {
             title: 'MailBin',
             files: data,
@@ -31,6 +31,19 @@ module.exports = function(app) {
         });
       }
     });
+  }
+
+  router.get('/', (req, res) => {
+    if (req.query.deleteEmail) {
+      s3.deleteObject({
+        Bucket: 'jlandrum-mailbin',
+        Key: req.query.deleteEmail
+      }, (err, data) => {
+        index(req, res);
+      })
+    } else {
+      index(req, res);
+    }
   });
 
   router.get('/view/:file', (req, res) => {

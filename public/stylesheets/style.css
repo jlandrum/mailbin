@@ -20,17 +20,46 @@ ul {
   height: 100%;
   display: flex;
 }
+.Index__Toggle {
+  position: fixed;
+  z-index: 100;
+  right: 16px;
+  top: 16px;
+}
 .Index__MailList {
   padding: 16px;
   display: flex;
   flex-direction: column;
+  background: white;
+}
+@media (max-width: 1200px) {
+  .Index__MailList {
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    position: absolute;
+    overflow: hidden;
+    transform: translate(-110%, 10px);
+    height: 90vh;
+    max-width: 90vw;
+    transition: all 300ms;
+  }
+  .Index__MailList--show {
+    transform: translate(10px, 10px);
+  }
 }
 .Index__MailList__List {
-  padding: 0;
+  padding: 8px;
   list-style: none;
   width: 800px;
   flex-grow: 1;
   overflow: auto;
+  border: 1px solid #CCC;
+  border-radius: 16px;
+}
+@media (max-width: 1600px) {
+  .Index__MailList__List {
+    width: 500px;
+  }
 }
 .Index__MailList__List__item {
   cursor: pointer;
@@ -41,7 +70,7 @@ ul {
   align-items: center;
 }
 .Index__MailList__List__item.active {
-  background-color: #d8eeeb;
+  background-color: #e6f8ff;
 }
 .Index__MailList__List__item:first-child {
   border-top-left-radius: 8px;
@@ -69,11 +98,23 @@ ul {
   border-radius: 4px;
   text-decoration: none;
 }
+.Index__MailList__List__item__button--delete {
+  background: #ff5900;
+  display: none;
+}
 .Index__FileView {
   flex-grow: 1;
   border: 1px solid #CCC;
   border-radius: 8px;
   margin: 8px;
+}
+@media (max-width: 1200px) {
+  .Index__FileView {
+    margin: 0;
+  }
+}
+.Index--meta .Index__MailList__List__item__button--delete {
+  display: inline-block;
 }
 
 .MailView {
@@ -83,14 +124,21 @@ ul {
   margin: 0 auto;
 }
 .MailView--inline {
-  padding: 8px;
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   border: 0;
 }
+.MailView--inline > div {
+  padding: 8px 16px;
+}
 .MailView__from, .MailView__to {
   display: flex;
   flex-direction: row;
+}
+.MailView__from > *, .MailView__to > * {
+  margin: 0;
 }
 .MailView__from__label, .MailView__to__label {
   width: 50px;

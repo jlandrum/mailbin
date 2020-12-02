@@ -19,19 +19,44 @@ ul {
   width: 100%;
   height: 100%;
   display: flex;
+  &__Toggle {
+    position: fixed;
+    z-index: 100;
+    right: 16px;
+    top: 16px;
+  }
   &__MailList {
     padding: 16px;
     display: flex;
     flex-direction: column;
+    background: white;
+    @media( max-width: 1200px ) {
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+      border-radius: 8px;
+      position: absolute;
+      overflow: hidden;
+      transform: translate(-110%,10px);
+      height: 90vh;
+      max-width: 90vw;
+      transition: all 300ms;
+      &--show {
+        transform: translate(10px,10px);
+      }
+    }
     &__List {
-      padding: 0;
+      padding: 8px;
       list-style: none;
       width:  800px;
       flex-grow: 1;
       overflow: auto;
+      border: 1px solid #CCC;
+      border-radius: 16px;
+      @media( max-width: 1600px ) {
+        width: 500px;
+      }
       &__item {
         &.active {
-          background-color: rgb(216, 238, 235);
+          background-color: rgb(230, 248, 255);
         }
         cursor: pointer;
         &:first-child {
@@ -64,6 +89,10 @@ ul {
           padding: 8px;
           border-radius: 4px;
           text-decoration: none;
+          &--delete {
+            background: #ff5900;
+            display: none;
+          }
         }
       }
     }
@@ -73,6 +102,14 @@ ul {
     border: 1px solid #CCC;
     border-radius: 8px;
     margin: 8px;
+    @media( max-width: 1200px ) {
+      margin: 0;
+    }
+  }
+  &--meta {
+    .Index__MailList__List__item__button--delete {
+      display: inline-block;
+    }
   }
 }
 
@@ -82,14 +119,21 @@ ul {
   padding: 16px;
   margin: 0 auto;
   &--inline {
-    padding: 8px;
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
     border: 0;
+    &>div {
+      padding: 8px 16px;
+    }
   }
   &__from, &__to {
     display: flex;
     flex-direction: row;
+    &>* {
+      margin: 0;
+    }
     &__label {
       width: 50px;
       font-weight: 800;
