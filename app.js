@@ -39,14 +39,15 @@ const smtp = new SMTPServer({
       new EmlParser(data)
         .parseEml()
         .then(result => {
-          const From = result.from.value.map(it => `"${it.name}" <${it.address}>`).join(',')
-          const To = result.to.value.map(it => `"${it.name}" <${it.address}>`).join(',')
-          const Subject = result.subject
+          const from = result.from.value.map(it => `"${it.name}" <${it.address}>`).join(',')
+          const to = result.to.value.map(it => `"${it.name}" <${it.address}>`).join(',')
+          const subject = result.subject
+	  const date = result.date
           s3.putObject({
             Bucket: 'jlandrum-mailbin',
             Key: filename,
             Body: data,
-            Metadata: {From, To, Subject},
+            Metadata: {from, to, subject, date},
           }, (err, data) => {})
       })
     });
