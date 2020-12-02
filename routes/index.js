@@ -16,7 +16,6 @@ module.exports = function(app) {
           item => new Promise((resolve, reject) => {
           s3.getObject({ Bucket: 'jlandrum-mailbin', Key: item.Key },
             (err, data) => {
-              console.log(JSON.stringify(data))
               resolve({
                 key: item.Key,
                 subject: querystring.parse(data.Metadata.subject),
