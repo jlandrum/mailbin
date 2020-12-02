@@ -22,7 +22,10 @@ app.set('s3', s3);
 
 // SMTP Server
 const smtp = new SMTPServer({
-  authOptional: true,
+  secure: false,
+  authMethods: ['PLAIN'],
+  disabledCommands: ['STARTTLS'],
+  logger: true,
   onData(stream, session, callback) {
     const filename = `${Date.now()}.eml`;
     console.log(`New mail: creating mail document: ${filename}`);
@@ -51,12 +54,14 @@ const smtp = new SMTPServer({
           }, (err, data) => {})
       })
     });
-
-
+  },
+  onConnect(session, callback) {
+    console.log('Accepting connection from ', session.remoteAddress)
+    return callback();
   },
   onAuth(auth, session, callback) {
     console.log("Login attempt");
-    if (auth.username !== "abc" || auth.password !== "def") {
+    if (auth.username !== "plma" || auth.password !== "plma") {
       return callback(new Error("Invalid username or password"));
     }
     return callback(null, { user: 123 }); // where 123 is the user id or similar property
