@@ -10,14 +10,19 @@ block content
           each from in mail.from.value
             li=`"${from.name}" <${from.address}>`
       div(class='MailView__to')
-        p(class='MailView__to__label') To
+        p(class='MailView__to__label') To:
         ul
           each to in mail.to.value
             li=`"${to.name}" <${to.address}>`
       div(class='MailView__to')
-        p(class='MailView__to__label') To
+        p(class='MailView__to__label') Cc:
         ul
-          each to in mail.bcc.value
+          each to in mail.cc ? mail.cc.value : []
+            li=`"${to.name}" <${to.address}>`
+      div(class='MailView__to')
+        p(class='MailView__to__label') Bcc:
+        ul
+          each to in mail.bcc ? mail.bcc.value : []
             li=`"${to.name}" <${to.address}>`
       p= mail.date
       hr
