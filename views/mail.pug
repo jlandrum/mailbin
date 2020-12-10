@@ -14,6 +14,11 @@ block content
         ul
           each to in mail.to.value
             li=`"${to.name}" <${to.address}>`
+      div(class='MailView__to')
+        p(class='MailView__to__label') To
+        ul
+          each to in mail.bcc.value
+            li=`"${to.name}" <${to.address}>`
       p= mail.date
       hr
       iframe(class='MailView__email' src=`/rendermail/${file}`)
